@@ -2,6 +2,7 @@ package main
 
 import (
     "fmt"
+    "math/rand"
     "os"
     "strconv"
 
@@ -28,11 +29,13 @@ func main() {
     numberOfLines, err := strconv.Atoi(os.Args[1])
     check(err)
 
+    var price = rand.Intn(100)
     for numberOfLines > 0 {
-        fakeItem := fake.Product() + "," + fake.Digits() + "\n"
+        fakeItem := fake.Product() + "," + strconv.Itoa(price) + "\n"
         _, err := file.WriteString(fakeItem)
         check(err)
         fmt.Println(fakeItem)
+        price += rand.Intn(100)
         numberOfLines--
     }
 }
