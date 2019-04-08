@@ -19,26 +19,14 @@ type product struct {
     price int
 }
 
-func main() {
-    if len(os.Args) < 3 {
-    err := fmt.Errorf("Missing arguments. find-pair <input file> <gift card balance>")
-        fmt.Println(err.Error())
-        return
-    }
-
-    file, err := os.Open(os.Args[1])
-    check(err)
-    defer file.Close()
-
-    cardBalance, err := strconv.Atoi(os.Args[2])
-    check(err)
-
-// read input file
+// reads file from string and returns array of product
+// can return nil
+func readProductFile(file *os.File) ([]product) {
+    // read input file
     scanner := bufio.NewScanner(file)
     products := []product{}
     for scanner.Scan() {
         lineItem := scanner.Text()
-        check(err)
         itemElements := strings.Split(lineItem, ",")
         if len(itemElements) == 1 {
             fmt.Println("only 1 item")
@@ -49,37 +37,76 @@ func main() {
         product := product{itemElements[0], productPrice}
         products = append(products, product)
     }
+    return products
+}
 
-// setup shrinking window
+
+func main() {
+    // handle argument input
+    if len(os.Args) < 3 {
+    err := fmt.Errorf("Missing arguments. find-pair <input file> <gift card balance>")
+        fmt.Println(err.Error())
+        return
+    }
+    file, err := os.Open(os.Args[1])
+    check(err)
+    defer file.Close()
+    cardBalance, err := strconv.Atoi(os.Args[2])
+    check(err)
+
+    // read input file
+    products := readProductFile(file)
+
+    // setup shrinking window
     top := len(products)-1
     bottom := 0
-    topPrice := products[top].price
-    currentPrice := 0
-    attemptedPrice := products[bottom].price
 
+    // check if enough products
+    if !(top > bottom) {
+        //not enough products
+        fmt.Println("Not Possible")
+        return
+    }
+
+    // algorithm best pair memory
+    // initial pair is invalid by size
+    var bestProductTop = len(products)
+    var bestProductBottom = 0
+    bestDIfference := cardBalance
+
+    // loop on shrinking window
     for top != bottom {
+        topPrice := products[top].price
+        currentPrice := products[bottom].price
+        attemptedPrice := products[bottom+1].price
+
         pairPrice := topPrice + currentPrice
         peekPrice := topPrice + attemptedPrice
+        currentDifference := cardBalance - pairPrice
 
-        if pairPrice <= peekPrice && peekPrice <= cardBalance {
-            bottom++
-            currentPrice = products[bottom-1].price
-            attemptedPrice = products[bottom].price
-        } else if pairPrice > cardBalance {
+        if currentDifference < bestDIfference && currentDifference >= 0 {
+            bestProductTop = top
+            bestProductBottom = bottom
+            bestDIfference = cardBalance - pairPrice
+        }
+
+        // shrinking window algorithm
+        if peekPrice > cardBalance {
             top--
-            topPrice = products[top].price
         } else {
-            if bottom < 0 {
-                bottom++
-                currentPrice = products[bottom-1].price
-                attemptedPrice = products[bottom].price
-                continue
-            }
-            fmt.Println("total price="+strconv.Itoa(pairPrice)+ " within " + strconv.Itoa(cardBalance-pairPrice) +" cents")
-
-            fmt.Println(products[top].name, products[top].price, ",", products[bottom].name, products[bottom].price)
-            return
+            bottom++
         }
     }
-    fmt.Println("Not Possible")
+
+    // final output
+    if bestProductTop ==  len(products) {
+        //no product pairs
+        fmt.Println("Not Possible")
+    } else {
+        if bottom == len(products) {
+            bestProductBottom--
+        }
+        fmt.Println(products[bestProductTop].name, products[bestProductTop].price, ",",
+                    products[bestProductBottom].name, products[bestProductBottom].price)
+    }
 }
