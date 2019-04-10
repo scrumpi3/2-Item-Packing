@@ -17,7 +17,7 @@ func check(e error) {
 
 func main() {
     if len(os.Args) < 3 {
-    err := fmt.Errorf("Missing arguments. createFakes <# of rows> <output file>")
+    err := fmt.Errorf("Missing arguments. fakerData <# of rows> <output file>")
         fmt.Println(err.Error())
         return
     }

@@ -20,7 +20,7 @@ type product struct {
 }
 
 // reads file from string and returns array of product
-// can return nil
+// can return empty array
 func readProductFile(file *os.File) ([]product) {
     // read input file
     scanner := bufio.NewScanner(file)
@@ -40,22 +40,27 @@ func readProductFile(file *os.File) ([]product) {
     return products
 }
 
-
-func main() {
+func inputArgs() (cardBalance int, products []product) {
     // handle argument input
     if len(os.Args) < 3 {
-    err := fmt.Errorf("Missing arguments. find-pair <input file> <gift card balance>")
+        err := fmt.Errorf("Missing arguments. find-pair <input file> <gift card balance>")
         fmt.Println(err.Error())
         return
     }
     file, err := os.Open(os.Args[1])
     check(err)
     defer file.Close()
-    cardBalance, err := strconv.Atoi(os.Args[2])
+
+    cardBalance, err = strconv.Atoi(os.Args[2])
     check(err)
 
     // read input file
-    products := readProductFile(file)
+    products = readProductFile(file)
+    return cardBalance, products
+}
+
+func main() {
+    cardBalance, products := inputArgs()
 
     // setup shrinking window
     top := len(products)-1
@@ -68,7 +73,7 @@ func main() {
         return
     }
 
-    // algorithm best pair memory
+    // memory for best pair algorithm
     // initial pair is invalid by size
     var bestProductTop = len(products)
     var bestProductBottom = 0
@@ -104,6 +109,7 @@ func main() {
         fmt.Println("Not Possible")
     } else {
         if bottom == len(products) {
+            // maximum pair
             bestProductBottom--
         }
         fmt.Println(products[bestProductTop].name, products[bestProductTop].price, ",",
