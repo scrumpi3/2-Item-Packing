@@ -43,37 +43,28 @@ $ ./find-pair <input file> <gift card balance>
 
 
 
-#### Building for source
-For production release:
-```sh
-$ gulp build --prod
-```
-Generating pre-built zip archives for distribution:
-```sh
-$ gulp build dist --prod
-```
-### Docker
-Dillinger is very easy to install and deploy in a Docker container.
+## Questions
+### Big-O
+What is the big O notation for your program?
 
-By default, the Docker will expose port 8080, so change this within the Dockerfile if necessary. When ready, simply use the Dockerfile to build the image.
+> This program will require O(n) runtime and O(n) space.
 
-```sh
-cd dillinger
-docker build -t joemccann/dillinger:${package.json.version} .
-```
-This will create the dillinger image and pull in the necessary dependencies. Be sure to swap out `${package.json.version}` with the actual version of Dillinger.
+## Bonus Questions
 
-Once done, run the Docker image and map the port to whatever you wish on your host. In this example, we simply map port 8000 of the host to port 8080 of the Docker (or whatever port was exposed in the Dockerfile):
+You are considering giving gifts to more people. Instead of choosing exactly 2 items, allow for 3
+gifts.
 
-```sh
-docker run -d -p 8000:8080 --restart="always" <youruser>/dillinger:${package.json.version}
-```
+> To allow for three gifts, I would add on additional product pointer to the algorithm, which incrementally increases in product price for products between the current high and low priced products.  I would follow that same process of calculating and minipulating the shrinking window, with a minor addition of the third pointer, used to fine tune the total price of the three selected products.
 
-Verify the deployment by navigating to your server address in your preferred browser.
+How would you optimize your solution if you could not load the file in memory?
+> I am going to assume the file cannot be loaded into memory becasue it is too large.  
+> Instead of using a single large file, I would subdivide the file into an ordered set of files that all follow the prerequsits as are defined in the orginal problem.
+> I would use a data structure, like a B-tree, to store the first value of each of the subfiles.
+> A stored value would be paired with a pointer to the value's source file.
+> I would then implement the same general pointer movement, at the file-level, to quickly determine which two files contain a potentential solution. 
+> Then I would transition from the file-level to the product-level, continuing to executing the same algorithm to find a potential solution.  
 
-```sh
-127.0.0.1:8000
-```
+
 
 ### Todos
 
