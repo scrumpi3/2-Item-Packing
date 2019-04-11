@@ -1,11 +1,18 @@
 # Generating Fake Product Data
 
-This application generates a file with a specific number of fake product name and price paires.
+This application generates a file with a specific number of fake product name and price pairs.
 
 ## Requirements
 Go
+github.com/icrowley/fake
 
 ## Usage
+To install fake package
+
+```sh
+go get github.com/icrowley/fake
+```
+
 To build the application
 
 ```sh

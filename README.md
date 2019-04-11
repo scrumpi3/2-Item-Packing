@@ -1,45 +1,10 @@
 # Challenge_2
 Find best two items to consume the most of a gift card balance.  This is a packing problem that can be solved with a greedy algorithm.
 
-The codeboase consists of three peices
-- Sample dataset generator
-- Algorithm implemtation
-- Test cases
-
-### Tech
-
-This application uses a number of open source projects to work properly:
-
-* [Fake] - Generates fake data of specific types.
-
-* [markdown-it] - Markdown parser done right. Fast and easy to extend.
-* [go] - duh
-
-And of course this application itself can be open source with a [repository][ch_2] on GitHub and using the MIT liciense.
-
-### Installation
-
-The application requires [go] and has been tested using version 1.12.1.
-
-Clone the repositoty into your GOPATH
-```sh
-$ cd ${GOPATH}/src/github.com/scrumpi3
-$ git clone https://github.com/scrumpi3/Challenge_2.git
-```
-
-To generate demonstration datasets, with fake data...
-```sh
-$ cd ${GOPATH}/src/github.com/scrumpi3/Challenge_2/fakerData
-$ go build
-$ ./fakerData <# of rows> <output file>
-```
-
-To find the best pair...
-```sh
-$ cd ${GOPATH}/src/github.com/scrumpi3/Challenge_2/find-pair
-$ go build
-$ ./find-pair <input file> <gift card balance>
-```
+The codebase consists of three components
+- [Sample dataset generator][generator]
+- [Algorithm implemtation][implementation]
+- [Test cases][test]
 
 
 
@@ -75,7 +40,9 @@ License
 [MIT][MIT_lic]
 
 
-
+[generator]: <https://github.com/scrumpi3/Challenge_2/tree/master/fakerData>
+[implementation]: <https://github.com/scrumpi3/Challenge_2/tree/master/find-pair>
+[test]: <https://github.com/scrumpi3/Challenge_2/tree/master/test>
 [ch_2]: <https://github.com/scrumpi3/Challenge_2>
 [fake]: <https://github.com/icrowley/fake>
 [MIT_lic]: <https://opensource.org/licenses/MIT>
