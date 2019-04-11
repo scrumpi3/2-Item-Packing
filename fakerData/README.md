@@ -8,18 +8,18 @@ Go
 ## Usage
 To build the application
 
-'''sh
+```sh
 go build . 
-'''
+```
 
 To view the application usage message
 
-'''sh
+```sh
 ./fakerData -help
-'''
+```
 
 To execute the application and create an output file named products.txt with 10 products sorted by price
 
-'''sh
+```sh
 ./fakerData -file=products.txt -rows=10 -seed=11
-'''
+```
