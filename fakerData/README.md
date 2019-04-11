@@ -25,6 +25,12 @@ To view the application usage message
 ./fakerData -help
 ```
 
+To test the application
+
+```sh
+go test
+```
+
 To execute the application and create an output file named products.txt with 10 products sorted by price
 
 ```sh
