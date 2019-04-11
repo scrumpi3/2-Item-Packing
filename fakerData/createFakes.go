@@ -1,6 +1,7 @@
 package main
 
 import (
+    "flag"
     "fmt"
     "math/rand"
     "os"
@@ -16,18 +17,19 @@ func check(e error) {
 }
 
 func main() {
-    if len(os.Args) < 3 {
-    err := fmt.Errorf("Missing arguments. fakerData <# of rows> <output file>")
-        fmt.Println(err.Error())
-        return
-    }
+    rowsPtr := flag.Int("rows", 0, "number of fake products")
+    filePtr := flag.String("file", "fakeProducts.txt", "name of output file")
+    seedPtr := flag.Int64("seed", 7, "random number seed")
+    flag.Parse()
 
-    file, err := os.Create(os.Args[2])
+    file, err := os.Create(*filePtr)
     check(err)
     defer file.Close()
 
-    numberOfLines, err := strconv.Atoi(os.Args[1])
-    check(err)
+    numberOfLines := *rowsPtr
+    seed := *seedPtr
+    fake.Seed(seed)
+    rand.Seed(seed)
 
     var price = rand.Intn(100)
     for numberOfLines > 0 {
