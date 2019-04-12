@@ -1,7 +1,6 @@
 package main
 
 import (
-//    "fmt"
     "log"
     "os/exec"
     "strconv"
@@ -9,18 +8,15 @@ import (
     "testing"
 )
 
-const executable string = "./find-pair"
-const tenKProducts  = "testData/tenKProducts.txt"
 
-func runCommand(fileName string, cardBalance int) (output string){
+func runCommand(fileName string, cardBalance int) (string){
+    const executable string = "./find-pair"
     cmd := exec.Command(executable, fileName, strconv.Itoa(cardBalance))
     out, err := cmd.CombinedOutput()
     if err != nil {
         log.Fatalf("cmd.Run() failed with %s\n", err)
     }
-    output = string(out)
-    log.Printf("combined out:\n%s\n", output)
-    return output
+    return string(out)
 }
 
 func notPossible(output string) (bool){
@@ -77,15 +73,36 @@ func TestAlgorithmWithNoIteration(t *testing.T) {
     }
 }
 
-/*
 //Large file; find neighboring pairs
 func TestFindNeighboringPairs(t *testing.T) {
-    t.Errorf("Not implemented")
+    const tenKProducts  = "testData/tenKProducts.txt"
+    firstOutput := runCommand(tenKProducts, 0)
+    if !notPossible(firstOutput) {
+        t.Errorf("Card balance set to zero, but a solution was produced")
+    }
+
+    secondOutput := runCommand(tenKProducts, 40000)
+    thirdOutput  := runCommand(tenKProducts, 39999)
+    fourthOutput := runCommand(tenKProducts, 39998)
+
+    if notPossible(secondOutput) || notPossible(thirdOutput) || notPossible(fourthOutput) {
+        t.Errorf("Card balance is high, but a solution was not produced")
+    }
+
+    if secondOutput == thirdOutput || thirdOutput == fourthOutput {
+        t.Errorf("Resulting outputs should all be different")
+    }
 }
 
 //Odd formatting; eat white space
 func TestFileWithWhitespace(t *testing.T) {
-    t.Errorf("Not implemented")
+    const tenKProducts  = "testData/tenKProductsWithWhiteSpace.txt"
+    const tenKProductsWithWhiteSpace  = "testData/tenKProductsWithWhiteSpace.txt"
+
+    firstOutput := runCommand(tenKProducts, 40000)
+    secondOutput := runCommand(tenKProductsWithWhiteSpace, 40000)
+    if firstOutput != secondOutput {
+        t.Errorf("Resulting outputs should be the same")
+    }
 }
 
-*/

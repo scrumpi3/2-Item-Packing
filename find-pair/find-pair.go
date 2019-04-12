@@ -32,6 +32,10 @@ func readProductFile(file *os.File) ([]product) {
             fmt.Println("only 1 item")
             break
         }
+        // trim leading and trailing whitespace
+        itemElements[0] = strings.TrimSpace(itemElements[0])
+        itemElements[1] = strings.TrimSpace(itemElements[1])
+
         productPrice, err := strconv.Atoi(itemElements[1])
         check(err)
         product := product{itemElements[0], productPrice}
