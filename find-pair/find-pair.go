@@ -27,7 +27,7 @@ func readProductFile(file *os.File) ([]product) {
     products := []product{}
     for scanner.Scan() {
         lineItem := scanner.Text()
-        itemElements := strings.Split(lineItem, ",")
+        itemElements := strings.Split(lineItem, ",")  // assumed column delimiter is a comma
         if len(itemElements) == 1 {
             fmt.Println("only 1 item")
             break
@@ -47,7 +47,20 @@ func inputArgs() (cardBalance int, products []product) {
         fmt.Println(err.Error())
         return
     }
-    file, err := os.Open(os.Args[1])
+
+    fileName := os.Args[1]
+
+    // check is file exists and is not a directory
+    fileInfo, err := os.Stat(fileName)
+    if os.IsNotExist(err) {
+        fmt.Println("File", fileName, "does not exist")
+        return cardBalance, products
+    } else if fileInfo.IsDir() {
+        fmt.Println("File", fileName, "is a directory")
+        return cardBalance, products
+    }
+
+    file, err := os.Open(fileName)
     check(err)
     defer file.Close()
 
@@ -81,14 +94,17 @@ func main() {
 
     // loop on shrinking window
     for top != bottom {
+        // lookup prices
         topPrice := products[top].price
         currentPrice := products[bottom].price
         attemptedPrice := products[bottom+1].price
 
+        // summed prices and difference
         pairPrice := topPrice + currentPrice
         peekPrice := topPrice + attemptedPrice
         currentDifference := cardBalance - pairPrice
 
+        // track best product pair
         if currentDifference < bestDIfference && currentDifference >= 0 {
             bestProductTop = top
             bestProductBottom = bottom
@@ -103,7 +119,7 @@ func main() {
         }
     }
 
-    // final output
+    // print final output
     if bestProductTop ==  len(products) {
         //no product pairs
         fmt.Println("Not Possible")

@@ -12,10 +12,10 @@ import (
 )
 
 // default executable and input values
-var executable string = "./fakerData"
-var defaultFile string = "fakeProducts.txt"
-var defaultNumProducts int= 0
-var defaultSeed int64 = 7
+const executable string = "./fakerData"
+const defaultFile string = "fakeProducts.txt"
+const defaultNumProducts int = 0
+const defaultSeed int64 = 7
 
 // TempFileName generates a temporary filename for use in testing or whatever
 // from https://stackoverflow.com/questions/28005865/golang-generate-unique-filename-with-extension
@@ -25,6 +25,25 @@ func TempFileName(prefix, suffix string) string {
     return prefix+hex.EncodeToString(randBytes)+suffix
 }
 
+// Helper function
+// Checks if the actual number of products matches the expected
+func checkNumProducts(products []byte, numProducts int, t *testing.T) {
+    if strings.Count(string(products), "\n") != numProducts {
+        t.Errorf("Execution of %s did not produce a file with %d products",
+                    executable, numProducts)
+    }
+}
+
+// Helper function
+// Checks if a named product exists in product list
+func checkProductExists(products []byte, productString string , t *testing.T) {
+    if !strings.Contains(string(products), productString){
+        t.Errorf("Seeded execution of %s did not produce product %s",
+                    executable, productString)
+    }
+}
+
+
 // Testing default execution
 func TestDefaultCreate(t *testing.T) {
     cmd := exec.Command(executable)
@@ -32,33 +51,32 @@ func TestDefaultCreate(t *testing.T) {
 
     dat, err := ioutil.ReadFile(defaultFile)
     check(err)
+
     if len(string(dat)) != 0 {
         t.Errorf("Default execution of %s did not produce empty file", executable)
     }
 }
 
-// Testing creation of a specific file containing a specific number of products
+// Testing creation of a user named file containing a specific number of products
 func TestCreateFileSpecificLengthAndName(t *testing.T) {
-    tempFileName := TempFileName("", ".txt")
+    tempFileName := TempFileName("test", ".txt")
     defer os.Remove(tempFileName)
-    productCount := rand.Intn(100)
+    productCount := rand.Intn(1000)
 
     cmd := exec.Command(executable, "-rows="+strconv.Itoa(productCount),
-                        "-seed=5", "-file="+tempFileName)
+                        "-file="+tempFileName)
     err := cmd.Run()
 
     dat, err := ioutil.ReadFile(tempFileName)
     check(err)
 
-    if strings.Count(string(dat), "\n") != productCount {
-        t.Errorf("Specific execution of %s did not produce file with %d products",
-                executable, productCount)
-    }
+    checkNumProducts(dat, productCount, t)
 }
 
 // Testing the random number seed function
+// Generated product must all ways be the same
 func TestCreateFileSpecificLengthNameAndSeed(t *testing.T) {
-    tempFileName := TempFileName("", ".txt")
+    tempFileName := TempFileName("test", ".txt")
     defer os.Remove(tempFileName)
     productCount := 1
     productString := "Yodoo GPS Input Amplifier,81"
@@ -70,13 +88,7 @@ func TestCreateFileSpecificLengthNameAndSeed(t *testing.T) {
     dat, err := ioutil.ReadFile(tempFileName)
     check(err)
 
-    if strings.Count(string(dat), "\n") != productCount {
-        t.Errorf("Specific execution of %s did not produce file with %d products",
-                executable, productCount)
-    }
+    checkNumProducts(dat, productCount, t)
 
-    if !strings.Contains(string(dat), productString){
-        t.Errorf("Seeded execution of %s did not produce product %s",
-                executable, productString)
-    }
+    checkProductExists(dat, productString, t)
 }
