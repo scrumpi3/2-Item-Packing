@@ -8,7 +8,8 @@ import (
     "testing"
 )
 
-
+// Helper function
+// Runs find-pair application
 func runCommand(fileName string, cardBalance int) (string){
     const executable string = "./find-pair"
     cmd := exec.Command(executable, fileName, strconv.Itoa(cardBalance))
@@ -19,6 +20,8 @@ func runCommand(fileName string, cardBalance int) (string){
     return string(out)
 }
 
+// Helper function
+// Checks string for contents 'Not Possible'
 func notPossible(output string) (bool){
     return strings.Contains(output, "Not Possible")
 }
