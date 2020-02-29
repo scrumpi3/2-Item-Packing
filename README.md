@@ -1,4 +1,4 @@
-# Challenge_2
+# Greatest Sum of Two Items that is Less then Maximum
 Find best two items to consume the most of a gift card balance. 
 This is a packing problem that can be solved with a greedy algorithm.
 
