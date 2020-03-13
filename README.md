@@ -27,6 +27,7 @@ gifts.
 > To allow for three gifts, I would add an additional product pointer to the algorithm, which incrementally increases in product price for products between the current high and low priced products.  
 > I would follow that same process of calculating and minipulating the shrinking window, with a minor addition of the third pointer, used to fine tune the total price of the three selected products.
 
+
 How would you optimize your solution if you could not load the file in memory?
 > I am going to assume the file cannot be loaded into memory becasue it is too large.  
 > Instead of using a single large file, I would subdivide the file into an ordered set of files that all follow the prerequsits as are defined in the orginal problem.

@@ -29,6 +29,10 @@ To find the best pair...
 $ cd ${GOPATH}/src/github.com/scrumpi3/Challenge_2/find-pair
 $ go build
 $ ./find-pair <input file> <gift card balance>
+
+Example:
+$ ./find-pair ./testData/tenKProducts.txt 10000
+Kayveo Power Disc Kit 8098 , Shufflester Performance Tuner 1902
 ```
 
 
