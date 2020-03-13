@@ -2,7 +2,7 @@
 Find best two items to consume the most of a gift card balance. 
 This is a packing problem that can be solved with a greedy algorithm.
 
-The codebase consists of three components
+The codebase consists of two components
 - [Sample dataset generator][generator]
 - [Algorithm implemtation][implementation]
 
@@ -16,20 +16,18 @@ The algorithm has now found a valid solution, which is tracked as the currect be
 The __top__ of the window in then decreased and the process continues until the window is closed.
 
 ## Questions
-### Big-O
-####What is the big O notation for your program?
+### Big-O: What is the big O notation for your program?
 
 > This program will require O(n) runtime and O(n) space.
 
 ### Bonus Questions
-
-####You are considering giving gifts to more people. Instead of choosing exactly 2 items, allow for 3
+You are considering giving gifts to more people. Instead of choosing exactly 2 items, allow for 3
 gifts.
 
 > To allow for three gifts, I would add an additional product pointer to the algorithm, which incrementally increases in product price for products between the current high and low priced products.  
 > I would follow that same process of calculating and minipulating the shrinking window, with a minor addition of the third pointer, used to fine tune the total price of the three selected products.
 
-####How would you optimize your solution if you could not load the file in memory?
+How would you optimize your solution if you could not load the file in memory?
 > I am going to assume the file cannot be loaded into memory becasue it is too large.  
 > Instead of using a single large file, I would subdivide the file into an ordered set of files that all follow the prerequsits as are defined in the orginal problem.
 > I would use a data structure, like a B-tree, to store the first value of each of the subfiles.
