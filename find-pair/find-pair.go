@@ -18,7 +18,7 @@ func check(e error) {
 
 type Product struct {
 	name  string `validate:"required"`
-	price int
+	price int    `validate:"required"`
 }
 
 // reads file from string and returns array of product
